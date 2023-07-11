@@ -48,7 +48,8 @@ with sync_playwright() as p:
                 current_title = page.locator('#video-title').nth(index).inner_text()
                 break
             except Exception as e:
-                print('error 1')
+                print('Error 1')
+                print()
                 continue
 
         ''' Make sure that the video is clickable '''
@@ -59,7 +60,8 @@ with sync_playwright() as p:
                     page.wait_for_timeout(1500)
                 break
             except Exception as e:
-                print('error 2')
+                print('Error 2')
+                print()
                 page.goto('https://www.youtube.com/@alpha_music/videos')
                 continue
 
@@ -87,6 +89,7 @@ with sync_playwright() as p:
                 break
             except Exception as e:
                 print('Error 3')
+                print()
                 page.goto('https://www.youtube.com/@alpha_music/videos')
                 page.wait_for_timeout(1500)
                 while not page.locator('#dismissible > ytd-thumbnail').nth(index).is_visible():
