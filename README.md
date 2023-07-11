@@ -12,4 +12,4 @@ Therefore, this repository mainly improves these problems, the following are the
 * The program will open local files and skip videos that have been recorded as you don't like
 
 Precautions
-Before running the program, please remember to change the account password in the program to your youtube account password (You will find relevant information in the notes in the program)
+* Before running the program, please remember to change the account password in the program to your youtube account password (You will find relevant information in the notes in the program)
