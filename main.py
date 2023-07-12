@@ -1,7 +1,6 @@
 from playwright.sync_api import sync_playwright, Playwright
 from playwright.sync_api import expect, Page
 
-# fill your account information
 userID = ''
 password = ''
 
@@ -97,9 +96,37 @@ with sync_playwright() as p:
                     page.wait_for_timeout(1500)
                 continue
 
-        ''' Check dislike button '''
-        while not page.locator('#segmented-dislike-button > ytd-toggle-button-renderer > yt-button-shape > button').nth(
+        ''' Check like button '''
+        with open('youtube_likes.txt', 'r', encoding='utf-8') as f:
+            like_lines = f.readlines()
+
+        while not page.locator('#segmented-like-button > ytd-toggle-button-renderer > yt-button-shape > button').nth(
                 0).is_visible():
+            pass
+        like_buttons = page.query_selector_all('#segmented-like-button > ytd-toggle-button-renderer > yt-button-shape '
+                                               '> button')
+        page.wait_for_timeout(1500)
+        like_pressed = like_buttons[0].get_attribute("aria-pressed")
+        ''' Like the song, but not in txt file '''
+        if like_pressed == 'true':
+            duplicate = False
+            for line in like_lines:
+                line = line.replace('\n', '')
+                if page.locator('#title > h1 > yt-formatted-string').inner_text() in line or line in page.locator(
+                        '#title > h1 > yt-formatted-string').inner_text():
+                    duplicate = True
+                    break
+
+            if not duplicate:
+                print('Likes!', page.locator('#title > h1 > yt-formatted-string').inner_text())
+                with open('youtube_likes.txt', 'a', encoding='utf-8') as f:
+                    f.writelines(page.locator('#title > h1 > yt-formatted-string').inner_text() + '\n')
+                print()
+            else:
+                print('Likes! but already record in the txt file')
+
+        ''' Check dislike button '''
+        while not page.locator('#segmented-dislike-button > ytd-toggle-button-renderer > yt-button-shape > button').nth(0).is_visible():
             pass
         buttons = page.query_selector_all('#segmented-dislike-button > ytd-toggle-button-renderer > yt-button-shape > '
                                           'button')
@@ -116,18 +143,19 @@ with sync_playwright() as p:
                     break
 
             if not duplicate:
-                print("I don't like this song, but not in txt yet")
-                print('writing', current_title)
+                # print("I don't like this song, but not in txt yet")
+                print('Dislikes!', current_title)
                 with open('youtube_dislikes.txt', 'a', encoding='utf-8') as f:
                     f.writelines(current_title + '\n')
-                print('writing', page.locator('#title > h1 > yt-formatted-string').inner_text())
+                print('Dislikes!', page.locator('#title > h1 > yt-formatted-string').inner_text())
                 with open('youtube_dislikes.txt', 'a', encoding='utf-8') as f:
                     f.writelines(page.locator('#title > h1 > yt-formatted-string').inner_text() + '\n')
                 print()
-            else:
-                print('strange')
+            # else:
+            #     print('strange')
 
             page.goto('https://www.youtube.com/@alpha_music/videos')
+            # page.go_back()
             page.wait_for_timeout(1500)
             videos = page.query_selector_all('#dismissible > ytd-thumbnail')
             continue
@@ -143,7 +171,7 @@ with sync_playwright() as p:
         while not page.locator('#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > '
                                'div.ytp-left-controls > div.ytp-time-display.notranslate > span:nth-child('
                                '2) > span.ytp-time-duration').is_visible():
-            print('waiting')
+            print('Get time length, waiting')
             pass
         time_duration = page.locator('#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > '
                                      'div.ytp-left-controls > div.ytp-time-display.notranslate > span:nth-child('
@@ -171,6 +199,30 @@ with sync_playwright() as p:
                                          'span.ytp-time-duration').inner_text()
             time_duration_sec = int(time_duration.split(':')[0]) * 60 + int(time_duration.split(':')[1])
 
+            ''' Keeping checking like button'''
+            with open('youtube_likes.txt', 'r', encoding='utf-8') as f:
+                like_lines = f.readlines()
+            like_buttons = page.query_selector_all(
+                '#segmented-like-button > ytd-toggle-button-renderer > yt-button-shape '
+                '> button')
+            page.wait_for_timeout(1500)
+            like_pressed = like_buttons[0].get_attribute("aria-pressed")
+            ''' Like the song, but not in txt file '''
+            if like_pressed == 'true':
+                duplicate = False
+                for line in like_lines:
+                    line = line.replace('\n', '')
+                    if page.locator('#title > h1 > yt-formatted-string').inner_text() in line or line in page.locator(
+                            '#title > h1 > yt-formatted-string').inner_text():
+                        duplicate = True
+                        break
+
+                if not duplicate:
+                    print('Likes!', page.locator('#title > h1 > yt-formatted-string').inner_text())
+                    with open('youtube_likes.txt', 'a', encoding='utf-8') as f:
+                        f.writelines(page.locator('#title > h1 > yt-formatted-string').inner_text() + '\n')
+                    print()
+
             ''' Keep checking dislike button '''
             buttons = page.query_selector_all(
                 '#segmented-dislike-button > ytd-toggle-button-renderer > yt-button-shape > '
@@ -179,10 +231,10 @@ with sync_playwright() as p:
             aria_pressed = buttons[0].get_attribute("aria-pressed")
             if aria_pressed == 'true':
                 print('pressed dislike button')
-                print('writing', current_title)
+                print('Dislikes!', current_title)
                 with open('youtube_dislikes.txt', 'a', encoding='utf-8') as f:
                     f.writelines(current_title + '\n')
-                print('writing', page.locator('#title > h1 > yt-formatted-string').inner_text())
+                print('Dislikes!', page.locator('#title > h1 > yt-formatted-string').inner_text())
                 with open('youtube_dislikes.txt', 'a', encoding='utf-8') as f:
                     f.writelines(page.locator('#title > h1 > yt-formatted-string').inner_text() + '\n')
                 print()
@@ -190,4 +242,5 @@ with sync_playwright() as p:
 
         ''' Finish the video, back to the main page '''
         page.goto('https://www.youtube.com/@alpha_music/videos')
+        # page.go_back()
         page.wait_for_timeout(1500)
