@@ -4,7 +4,13 @@ The **YouTube Alpha Music Player** is a tool designed to enhance your experience
 
 This repository aims to solve these issues by offering the following features:
 
-## Features
+Therefore, this repository mainly improves these problems, the following are the functions of this repository
+* If your youtube account is not premium, it will automatically click to skip the advertisement at the end of the video countdown
+* The program will play from the first song to the last song
+* After entering the movie page, check whether the dislike button is pressed. If available, it will record this song in the local file and play the next song
+* If you press the dislike button during video playback, it will record the song in the local file and play the next song
+* The program will open local files and skip videos that have been recorded as you don't like
+* Record the songs you liked in the txt file
 
 - **Auto Ad Skipping**: If you don’t have a YouTube Premium account, the program will automatically skip ads once the countdown ends.
 - **Sequential Playback**: It plays songs sequentially, from the first to the last in the playlist.
