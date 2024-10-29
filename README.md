@@ -1,61 +1,26 @@
-# YouTube Video Auto-Liker/Disliker
+# YouTube Alpha Music Player
 
-This script automates interactions on YouTube using Playwright. It allows users to automatically log in, browse videos on a specified channel, like or dislike videos based on user preferences, and record these actions in local text files.
+The **YouTube Alpha Music Player** is a tool designed to enhance your experience with the YouTube channel [알파 (@alpha_music)](https://www.youtube.com/@alpha_music), which regularly releases the latest Korean rap tracks. While YouTube’s “Play All” feature allows you to play music continuously, it often becomes repetitive, cycling through 10-15 songs, making it inconvenient for those who wish to discover new music. Additionally, users often have to manually skip songs they dislike, which can be cumbersome.
+
+This repository aims to solve these issues by offering the following features:
 
 ## Features
 
-- **Auto Login**: Automatically logs into YouTube using provided user credentials.
-- **Video Browsing**: Automatically browses through all videos on a specified channel and processes them according to predefined rules.
-- **Auto Like/Dislike**: If a video is liked or disliked by the user but not recorded in the local file, the script will add it to the respective file.
-- **Skip Disliked Videos**: Skips videos if the title is listed in the `youtube_dislikes.txt` file.
-- **Ad Skipping**: Automatically skips ads during video playback.
+- **Auto Ad Skipping**: If you don’t have a YouTube Premium account, the program will automatically skip ads once the countdown ends.
+- **Sequential Playback**: It plays songs sequentially, from the first to the last in the playlist.
+- **Dislike Detection**: Upon entering a video page, the program checks if the dislike button has been pressed. If so, it records the song in a local file and skips to the next song.
+- **Real-Time Dislike Recording**: If you press the dislike button during playback, the program records the song in the local file and moves to the next song.
+- **Skip Disliked Songs**: The program reads the local file of disliked songs and skips any that have been previously recorded as disliked.
+- **Like Recording**: It keeps track of liked songs in a separate text file.
 
-## Requirements
+## Precautions
 
-- Python 3.x
-- Playwright
+- **Account Login**: Before running the program, update the account credentials to your YouTube account's username and password. You will find the relevant instructions in the code comments.
 
-## Installation
+## How to Use
 
-1. Install Playwright:
+1. Clone this repository to your local machine.
+2. Modify the script to include your YouTube account credentials.
+3. Run the program to start exploring new music on the **알파 (@alpha_music)** channel with improved playback control.
 
-   ```bash
-   pip install playwright
-   ```
-
-2. Initialize Playwright:
-
-   ```bash
-   playwright install
-   ```
-
-## Usage
-
-1. Modify the `userID` and `password` variables in the script with your YouTube login credentials.
-
-2. Run the script using the following command:
-
-   ```bash
-   python script.py
-   ```
-
-3. The script will perform the following tasks:
-   - Navigate to the specified YouTube channel page.
-   - Browse and process each video.
-   - Record any liked or disliked videos in the `youtube_likes.txt` or `youtube_dislikes.txt` files.
-   - Return to the channel page after finishing each video and proceed to the next one.
-
-## Files
-
-- `script.py`: The main script file containing all the automation logic.
-- `youtube_likes.txt`: Records the titles of videos that the user has liked.
-- `youtube_dislikes.txt`: Records the titles of videos that the user has disliked.
-
-## Important Notes
-
-- Before running the script for the first time, ensure that the `youtube_likes.txt` and `youtube_dislikes.txt` files are present in the same directory as the script. If not, create these files manually.
-- Do not share your YouTube credentials with others to maintain account security.
-
-## License
-
-This script is intended for learning and personal use only. Please do not use it for commercial purposes or in ways that violate YouTube's terms of service.
+Feel free to contribute and suggest improvements!
